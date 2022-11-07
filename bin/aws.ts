@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { AwsStack } from '../lib/aws-stack';
+import { StateMachineCodeStack } from '../lib/stacks/state-machine-code-stack';
 
 const app = new cdk.App();
-new AwsStack(app, 'AwsStack');
+new StateMachineCodeStack(app, 'StateMachineCodeStackThingy');
