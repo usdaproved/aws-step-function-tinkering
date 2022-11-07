@@ -1,15 +1,8 @@
-# Welcome to your CDK TypeScript project
+# Toy state machine
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`AwsStack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+Tinkering around with maps and lambdas inside a state machine.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+Seeing how the data flows into, within, and out of the map.
 
-## Useful commands
-
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+This was related to something at work but in no way, shape, or form represents real data or real steps 
+within that work process.
