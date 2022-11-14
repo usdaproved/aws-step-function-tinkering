@@ -1,6 +1,6 @@
-import { SecondMap, SecondMapInput } from '../stacks/state-machine-types';
+import { SecondMapInput } from '../stacks/state-machine-types';
 
-export const handler = async (event: SecondMapInput): Promise<SecondMap> => {
+export const handler = async (event: SecondMapInput): Promise<SecondMapInput> => {
     console.log(`Executing second-step for ${event.id}`);
     let result: string = "FAIL";
     
@@ -12,5 +12,7 @@ export const handler = async (event: SecondMapInput): Promise<SecondMap> => {
         throw new Error("Second step was set not to pass.");
     }
 
-    return { ...event.state, secondStepResult: result };
+    event.state.secondStepResult = result;
+
+    return event;
 };

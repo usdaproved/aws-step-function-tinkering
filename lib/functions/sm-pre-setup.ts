@@ -1,4 +1,4 @@
-import { FirstMap, FirstMapInput, SecondMap, SecondMapInput } from '../stacks/state-machine-types';
+import { FirstMapInput, SecondMapInput } from '../stacks/state-machine-types';
 
 export const handler = async (event: FirstMapInput | SecondMapInput): Promise<FirstMapInput | SecondMapInput> => {
     console.log(`Executing pre-setup for ${event.id}`);

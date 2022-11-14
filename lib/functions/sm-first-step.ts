@@ -1,6 +1,6 @@
-import { FirstMap, FirstMapInput } from '../stacks/state-machine-types';
+import { FirstMapInput } from '../stacks/state-machine-types';
 
-export const handler = async (event: FirstMapInput): Promise<FirstMap> => {
+export const handler = async (event: FirstMapInput): Promise<FirstMapInput> => {
     console.log(`Executing first-step for ${event.id}`);
     let result: string = "FAIL";
     
@@ -12,5 +12,7 @@ export const handler = async (event: FirstMapInput): Promise<FirstMap> => {
         throw new Error("First step was set not to pass.");
     }
 
-    return { ...event.state, firstStepResult: result };
+    event.state.firstStepResult = result;
+
+    return event;
 };
