@@ -18,22 +18,6 @@ export class StateMachineCodeStack extends Stack {
 
         const failureState = new Fail(this, "State Machine Failure");
 
-        // New idea for error handling within this map.
-        // I don't want the map to ever throw an error.
-        // I want all errors caught and then added to the execution path.
-        // Then after each map, there will be a process to check if any errors exist within the execution.
-        // If they do then the output of the map is fed back into the map.
-        // This input will contain lambda success results and lambda failures.
-        // This means that we will need to check for a success to see if we even need to execute the lambda.
-        // We also need to solve the retry with back off
-        // As well as keep track of how many times we retried so that we can implement that report and wait step.
-
-        // If I have every lambda within the map retry with back off.
-        // Then after the lambda has failed the most amount of times,
-        // I can add a catch that will go to the next
-
-        // I think I need a general transform map output lambda.
-
         // Lambda handler definition
         const preStepLambda = new Function(this, "PreStep", {
             handler: "sm-pre-setup.handler",
@@ -72,11 +56,6 @@ export class StateMachineCodeStack extends Stack {
             runtime: Runtime.NODEJS_16_X,
             code: Code.fromAsset(path.join(__dirname, "../functions"))
         });
-
-        
-
-        // TODO(Trystan): I need to figure out how to pass what lambdaInvoke called the catch handler
-        // Perhaps the error object contains enough context about where the error was thrown?
 
         const makeMap = (
             idPrefix: string,
@@ -165,22 +144,17 @@ export class StateMachineCodeStack extends Stack {
         const finalStepTask = new LambdaInvoke(this, "FinalStepTask", {
             lambdaFunction: finalStepLambda,
             outputPath: "$.Payload"
-        }).next(failureState);
+        }).next(successState);
 
         const secondMap = makeMap("second-map", "SecondMap", "$.secondSteps", [preStepLambda, secondStepLambda], finalStepTask);
         const firstMap = makeMap("first-map", "FirstMap", "$.firstSteps", [preStepLambda, firstStepLambda], secondMap);
         
-
-        
-
         const stateMachineDefinition = firstMap;
 
         const stateMachine = new StateMachine(this, "TestStateMachine", {
             definition: stateMachineDefinition,
             stateMachineName: "TestStateMachine"
         });
-
-        //stateMachine.grantRead(mapTransformOutputLambda);
 
         deadLetterQueue.grantSendMessages(stateMachine);
     }
